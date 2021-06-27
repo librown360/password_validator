@@ -12,9 +12,30 @@ public class ValidatePassword {
         boolean passwordHasValidLength;
         boolean passwordHasLetter;
         boolean passwordHasNumber;
+        boolean passwordHasSpecialCharacter;
 
-    // method to validate password length
-        public void validatePasswordLength() {
+        // validate user password based on user type
+        public void validateUser() {
+
+            String uType = u.getUserType();
+
+            if(uType.equals("regular")) {
+                validateRegularPasswordLength();
+                validatePasswordHasLetter();
+                validatePasswordHasNumber();
+                validateRegularPassword();
+            } else {
+                validateAdminPasswordLength();
+                validatePasswordHasLetter();
+                validatePasswordHasNumber();
+                validatePasswordHasSpecialCharacter();
+                validateAdminPassword();
+            }
+
+        }
+
+        // method to validate regular password length
+        public void validateRegularPasswordLength() {
 
             // password length requirement
             int requiredPasswordLength = 8;
@@ -74,9 +95,56 @@ public class ValidatePassword {
             }
         }
 
-        // method to determine whether password is valid or invalid
-        public void validatePassword() {
+        // method to determine whether regular password is valid or invalid
+        public void validateRegularPassword() {
             if (passwordHasValidLength == true && passwordHasLetter == true && passwordHasNumber == true) {
+                System.out.println("The password is accepted");
+            }
+        }
+
+        // method to validate admin password length
+        public void validateAdminPasswordLength() {
+            // password length requirement
+            int requiredPasswordLength = 13;
+
+            // determine the password length
+            int passwordCount = u.getPassword().length();
+
+            // validate the password length and display appropriate message
+            if (passwordCount >= requiredPasswordLength) {
+                passwordHasValidLength = true;
+            } else {
+                System.out.println("The password must be at least 13 characters.");
+            }
+    }
+
+        // method to validate password has a special character
+        public void validatePasswordHasSpecialCharacter() {
+
+            // pattern for finding a special character
+            String specialCharacterPattern = ".*['!'||'@'||'#'||'$'||'%'||'^'||'&'||'*'].*";
+
+            // create and compile pattern
+            Pattern pattern = Pattern.compile(specialCharacterPattern);
+
+            // create matcher to compare pattern with password
+            Matcher matcher = pattern.matcher(u.getPassword());
+
+            passwordHasSpecialCharacter = matcher.matches();
+
+            // check password for special character and set flag/message accordingly
+            if (passwordHasSpecialCharacter == true) {
+                passwordHasSpecialCharacter = true;
+            } else {
+                System.out.println("The password must contain at least one of the following characters: " +
+                        "!, @, #, $, %, ^, &, or *.");
+            }
+        }
+
+        // method to determine whether admin password is valid or invalid
+        public void validateAdminPassword() {
+            if (passwordHasValidLength == true && passwordHasLetter == true && passwordHasNumber == true &&
+                    passwordHasSpecialCharacter == true) {
                 System.out.println("The password is accepted");
             }
         }

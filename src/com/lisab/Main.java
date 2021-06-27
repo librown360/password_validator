@@ -5,22 +5,25 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-	// get and store password from input
+        // get and store password from input
 
-        // Request user to enter password
-        System.out.println("Enter password");
-        // Read in user password
-        Scanner scanner = new Scanner(System.in);
+        // Request user type
+        System.out.println("Enter user type: ");
+        // Read user type
+        Scanner scr1 = new Scanner(System.in);
+        // Store user type
+        String userType = scr1.nextLine();
+        // Request user password
+        System.out.println("Enter password: ");
+        // Read user password
+        Scanner scr2 = new Scanner(System.in);
         // Store user password
-        String password = scanner.nextLine();
+        String password = scr2.nextLine();
 
-        // validate password
         ValidatePassword v = new ValidatePassword();
+        v.u.setUserType(userType);
         v.u.setPassword(password);
-        v.validatePasswordLength();
-        v.validatePasswordHasLetter();
-        v.validatePasswordHasNumber();
-        v.validatePassword();
+        v.validateUser();
 
     }
 }

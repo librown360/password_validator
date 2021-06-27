@@ -2,7 +2,8 @@ package com.lisab;
 
 public class User {
 
-    String password;
+    private String password;
+    private String userType;
 
     public String getPassword() {
         return password;
@@ -12,4 +13,11 @@ public class User {
         this.password = password;
     }
 
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 }
