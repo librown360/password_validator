@@ -12,7 +12,7 @@ public class ValidatePassword {
         boolean passwordHasValidLength;
         boolean passwordHasLetter;
         boolean passwordHasNumber;
-        boolean passwordHasSpecialCharacter;
+        boolean passwordHasSpecialCharacters;
 
         // validate user password based on user type
         public void validateUser() {
@@ -28,7 +28,7 @@ public class ValidatePassword {
                 validateAdminPasswordLength();
                 validatePasswordHasLetter();
                 validatePasswordHasNumber();
-                validatePasswordHasSpecialCharacter();
+                validateAdminPasswordHasSpecialCharacters();
                 validateAdminPassword();
             }
 
@@ -38,7 +38,7 @@ public class ValidatePassword {
         public void validateRegularPasswordLength() {
 
             // password length requirement
-            int requiredPasswordLength = 8;
+            int requiredPasswordLength = 10;
 
             // determine the password length
             int passwordCount = u.getPassword().length();
@@ -47,7 +47,7 @@ public class ValidatePassword {
             if (passwordCount >= requiredPasswordLength) {
                 passwordHasValidLength = true;
             } else {
-                System.out.println("The password must be at least 8 characters.");
+                System.out.println("The password must be at least 10 characters.");
             }
         }
 
@@ -118,11 +118,11 @@ public class ValidatePassword {
             }
     }
 
-        // method to validate password has a special character
-        public void validatePasswordHasSpecialCharacter() {
+        // method to validate password has at least three special characters
+        public void validateAdminPasswordHasSpecialCharacters() {
 
-            // pattern for finding a special character
-            String specialCharacterPattern = ".*['!'||'@'||'#'||'$'||'%'||'^'||'&'||'*'].*";
+            // pattern for finding at least one of any of these special characters
+            String specialCharacterPattern = "[!@#$%^&*]{1}";
 
             // create and compile pattern
             Pattern pattern = Pattern.compile(specialCharacterPattern);
@@ -130,21 +130,29 @@ public class ValidatePassword {
             // create matcher to compare pattern with password
             Matcher matcher = pattern.matcher(u.getPassword());
 
-            passwordHasSpecialCharacter = matcher.matches();
+            //loop through password to count occurrences of special characters
+            int count = 0;
+            while (matcher.find()){
+                count++;
+                //System.out.println("found: " + count + " : " + m.start() + " - "
+                  //      + m.end());
+            }
 
-            // check password for special character and set flag/message accordingly
-            if (passwordHasSpecialCharacter == true) {
-                passwordHasSpecialCharacter = true;
+            // check for three occurrences of special characters and set flag accordingly
+            if (count >= 3) {
+                passwordHasSpecialCharacters = true;
             } else {
-                System.out.println("The password must contain at least one of the following characters: " +
+                passwordHasSpecialCharacters = false;
+                System.out.println("The password must contain at least three of any of the following characters: " +
                         "!, @, #, $, %, ^, &, or *.");
             }
+
         }
 
         // method to determine whether admin password is valid or invalid
         public void validateAdminPassword() {
             if (passwordHasValidLength == true && passwordHasLetter == true && passwordHasNumber == true &&
-                    passwordHasSpecialCharacter == true) {
+                    passwordHasSpecialCharacters == true) {
                 System.out.println("The password is accepted");
             }
         }
